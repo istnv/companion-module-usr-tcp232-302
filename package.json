@@ -1,0 +1,19 @@
+{
+	"name": "usr-rs232-302",
+	"version": "1.0.0",
+	"api_version": "1.0.0",
+	"keywords": [
+		"Generic", "RS232"
+	],
+	"manufacturer": "USR"
+	"product": "USR-RS232-302",
+	"shortname": "usr302",
+	"description": "Companion Module for USR RS232 to Ethernet Converter",
+	"homepage": "https://www.usriot.com/products/rs232-to-ethernet-converter.html",
+	"main": "usr302.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "John A Knight Jr <jjr@ayesti.com>",
+	"license": "MIT"
+}
