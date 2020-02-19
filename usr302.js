@@ -41,7 +41,7 @@ instance.prototype.init_tcp = function() {
 	}
 
 	if (self.config.host) {
-		self.socket = new tcp(self.config.host, 4999);
+		self.socket = new tcp(self.config.host, self.config.port);
 
 		self.socket.on('status_change', function (status, message) {
 			self.status(status, message);
@@ -59,20 +59,42 @@ instance.prototype.config_fields = function () {
 	var self = this;
 	return [
 		{
-			type:  'textinput',
-			id:    'host',
-			label: 'Device IP',
-			width: 12,
-			regex: self.REGEX_IP,
-		},
-		{
 			type:  'text',
 			id:    'info',
 			width: 12,
 			label: 'Information',
-			value: 'This module controls an itac IP2SL device by <a href="https://www.globalcache.com/products/itach/ip2slspecs/" target="_new">Global Cache</a>.'
+			value: 'This module controls a USR-IOT USR-TCP232-302 device by <a href="https://www.usriot.com/products/rs232-to-ethernet-converter.html" target="_new">USR-IOT</a>.'
 		},
-	]
+		{
+			type:  'textinput',
+			id:    'host',
+			label: 'Device IP',
+			width: 12,
+			tooltip: 'The IP of the adapter',
+			regex: self.REGEX_IP
+		},
+		{
+			type:  'textinput',
+			id:    'port',
+			label: 'Device Port',
+			width: 12,
+			tooltip: 'The Port of the adapter',
+			regex: self.REGEX_PORT,
+			default: '40302'
+		},
+		{
+			type:    'dropdown',
+			label:   'Line Termination',
+			id:      'term',
+			default: '\r',
+			choices:	[
+			   { id: '',     label: 'No termination' },
+			   { id: '\r',   label: 'Carriage Return - \\r' },
+			   { id: '\n',   label: 'Line Feed - \\n' },
+			   { id: '\r\n', label: 'Carriage Return/Line Feed - \\r\\n' },
+			]
+	   },
+	];
 };
 
 // When module gets deleted
@@ -83,7 +105,7 @@ instance.prototype.destroy = function() {
 		self.socket.destroy();
 	}
 
-	debug("destroy", self.id);;
+	debug("destroy", self.id);
 };
 
 instance.prototype.actions = function(system) {
@@ -99,9 +121,19 @@ instance.prototype.actions = function(system) {
 					 id:      'sl'
 				}
 			]
+		},
+		'hexcommand':	{
+			label: 'HEX based command',
+			options: [
+				{
+					 type:    'textinput',
+					 label:   'Type hex values to send',
+					 id:      'hex'
+				}
+			]
 		}
 	});
-}
+};
 
 instance.prototype.action = function(action) {
 	var self = this;
